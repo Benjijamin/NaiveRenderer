@@ -15,6 +15,6 @@ class PpmWriter
         void print(const Vec3i *imageBuffer) const;
 };
 
-void readImage(const char *fileName, Vec3i *imageBuffer);
+void readPpm(const std::string &fileName, std::vector<unsigned char> &imageBuffer, int &width, int &height);
 
 #endif

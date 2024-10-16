@@ -1,83 +1,69 @@
 #include <ppm.h>
+#include <sstream>
 
 void PpmWriter::print(const Vec3i *imageBuffer) const
-        {
-            std::ofstream file;
-            file.open("output.ppm");
-
-            file << "P3\n" << w << ' ' << h << "\n255\n";
-
-            for (int j = 0; j < h; j++)
-            {
-                for(int i = 0; i < w; i++)
-                {
-                    file << imageBuffer[j * w + i].x << 
-                    ' ' << imageBuffer[j * w + i].y << 
-                    ' ' << imageBuffer[j * w + i].z << '\n';
-                }
-            }
-
-            file.close();
-        }
-
-void readImage(const char *fileName, Vec3i *imageBuffer)
 {
-    FILE *file;
-    int r,g,b, w,h, maxColor;
-    char buffer[64];
+    std::ofstream file;
+    file.open("output.ppm");
 
-    file = fopen(fileName, "r");
+    file << "P3\n" << w << ' ' << h << "\n255\n";
 
-    if(file == NULL)
+    for (int j = 0; j < h; j++)
     {
-        printf("Unable to open ppm file\n");
-        fclose(file);
+        for(int i = 0; i < w; i++)
+        {
+            file << imageBuffer[j * w + i].x << 
+            ' ' << imageBuffer[j * w + i].y << 
+            ' ' << imageBuffer[j * w + i].z << '\n';
+        }
+    }
+
+    file.close();
+}
+
+void readPpm(const std::string &fileName, std::vector<unsigned char> &imageBuffer, int &width, int &height)
+{
+    std::ifstream file(fileName);
+
+    if(!file)
+    {
+        std::cerr << "cannot open file" << std::endl;
         exit(0);
     }
-    else
+
+    std::string l;
+
+    std::getline(file, l);
+    if(l != "P3")
     {
-        rewind(file);
+        std::cerr << "file is not a p3" << std::endl;
+        exit(0);
+    }
 
-        buffer[0] = fgetc(file);
-        buffer[1] = fgetc(file);
+    std::getline(file, l);
+    std::istringstream resolution(l);
+    resolution >> width >> height;
 
-        if((buffer[0] != 'P') || (buffer[1] != '3'))
-        {
-            printf("not a P3 ppm file\n");
-            exit(0);
-        }
+    std::getline(file, l);
+    int maxColor;
+    std::istringstream maxC(l);
+    maxC >> maxColor;
 
-        while(isdigit(buffer[0] == false))
-        {
-            buffer[0] = fgetc(file);
-        }
+    if(maxColor != 255)
+    {
+        std::cerr << "max color is not 255" << std::endl;
+        exit(0);
+    }
 
-        ungetc(buffer[0], file);
+    imageBuffer.reserve(width * height * 3);
 
-        if(fscanf(file, "%d %d", w, h) != 2)
-        {
-            printf("cannot read correct width and height\n");
-            exit(0);
-        }
+    int r,g,b;
+    for(int i = 0; i < width * height; i++)
+    {
+        file >> r >> g >> b;
 
-        if(fscanf(file, "%d", maxColor) != 1)
-        {
-            printf("cannot read correct color format\n");
-            exit(0);
-        }
-
-        for(int j = 0; j < h; j++)
-        {
-            for(int i = 0; i < w; i++)
-            {
-                fscanf(file, "%d", r);
-                fscanf(file, "%d", g);
-                fscanf(file, "%d", b);
-
-                imageBuffer[w * j + i] = Vec3i(r,g,b);
-            }
-        }
-
-        fclose(file);
+        imageBuffer[i * 3] = static_cast<unsigned char>(r);
+        imageBuffer[i * 3 + 1] = static_cast<unsigned char>(g);
+        imageBuffer[i * 3 + 2] = static_cast<unsigned char>(b);
     }
 }

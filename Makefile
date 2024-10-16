@@ -1,13 +1,16 @@
 WORKDIR=$(CURDIR)
 GLFW=$(WORKDIR)/glfw
+GLEW=$(WORKDIR)/glew
 
 GLFW_INCLUDE=$(GLFW)/include
+GLEW_INCLUDE=$(GLEW)/include
 UTILS_INCLUDE=$(WORKDIR)/utils
 MATH_INCLUDE=$(WORKDIR)/math
-INCLUDES=-I$(WORKDIR)/ -I$(UTILS_INCLUDE) -I$(MATH_INCLUDE) -I$(GLFW_INCLUDE) 
+INCLUDES=-I$(WORKDIR)/ -I$(UTILS_INCLUDE) -I$(MATH_INCLUDE) -I$(GLFW_INCLUDE) -I$(GLEW_INCLUDE) 
 
-GLFWLIB=$(GLFW)/lib
-LINKS=-L$(GLFWLIB)
+GLFW_LIB=$(GLFW)/lib
+GLEW_LIB=$(GLEW)/lib
+LINKS=-L$(GLFW_LIB) -L$(GLEW_LIB)
 
 UTILS := $(wildcard $(WORKDIR)/utils/*.cpp)
 UTILS_OBJECTS := $(UTILS:.cpp=.o)
@@ -24,5 +27,5 @@ main.exe: main.cpp
 	@echo making math
 	@make -C math
 	@echo making exe
-	@g++ -g $(INCLUDES) $(LINKS) $(OBJECTS) main.cpp -lglfw3 -lgdi32 -o $(WORKDIR)/main.exe
+	@g++ -g $(INCLUDES) $(LINKS) $(OBJECTS) main.cpp -lglfw3 -lglew32 -lglu32 -lopengl32 -lgdi32 -o $(WORKDIR)/build/main.exe
 	@echo build finished
