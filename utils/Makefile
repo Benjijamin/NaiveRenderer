@@ -1,4 +1,4 @@
-OBJS = utils.o ppm.o
+OBJS = utils.o ppm.o objloader.o
 
 all: $(OBJS)
 
@@ -9,3 +9,7 @@ utils.o: utils.cpp utils.h
 ppm.o: ppm.cpp ppm.h
 	@echo making ppm
 	@g++ -c $(INCLUDES) ppm.cpp -o ppm.o
+
+objloader.o: objloader.cpp objloader.h
+	@echo making objloader
+	@g++ -c $(INCLUDES) objloader.cpp -o objloader.o

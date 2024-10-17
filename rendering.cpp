@@ -3,6 +3,7 @@
 #include <camera.cpp>
 #include <tri.h>
 #include <ppm.h>
+#include <objloader.h>
 
 void renderScene(const int WIDTH, const int HEIGHT)
 {
@@ -19,12 +20,19 @@ void renderScene(const int WIDTH, const int HEIGHT)
         }
     }
 
+    OBJModel cube;
+    cube.loadOBJ("models/cube.obj");
+
+    OBJModel models[1] = 
+    {
+        
+    };
+
     Tri tris[2] = 
     {
         Tri(Vec3f(0, 0, -0.33), Vec3f(1, 0, -3.3), Vec3f(1, 1, -5)),
         Tri(Vec3f(0.8, 1.2, -7), Vec3f(0.01, 0, -0.3), Vec3f(1, 0.1, -3))
     };
-
 
     for(Tri tri : tris)
     {
