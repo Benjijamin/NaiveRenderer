@@ -91,4 +91,18 @@ class Camera{
 
             return pRaster;
         }
+
+        void translate(float x, float y, float z)
+        {
+            worldToCameraM[3][0] += x;
+            worldToCameraM[3][1] += y;
+            worldToCameraM[3][2] += z;
+        }
+
+        void setScale(float x, float y, float z)
+        {
+            worldToCameraM[0][0] = x;
+            worldToCameraM[1][1] = y;
+            worldToCameraM[2][2] = z;
+        }
 };

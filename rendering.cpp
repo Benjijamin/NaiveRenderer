@@ -9,6 +9,8 @@ void renderScene(const int WIDTH, const int HEIGHT)
 {
     Camera cam(WIDTH, HEIGHT);
 
+    cam.translate(-2, 0, -10);
+
     Vec3i *imageBuffer = new Vec3i[WIDTH * HEIGHT];
     float *depthBuffer = new float[WIDTH * HEIGHT];
 
@@ -20,42 +22,23 @@ void renderScene(const int WIDTH, const int HEIGHT)
         }
     }
 
+    std::vector<Tri> tris;
+
     OBJModel cube;
     cube.loadOBJ("models/cube.obj");
+    std::vector<Tri> cubeTris = cube.toTris();
 
-    OBJModel models[1] = 
-    {
-        
-    };
-
-    Tri tris[2] = 
-    {
-        Tri(Vec3f(0, 0, -0.33), Vec3f(1, 0, -3.3), Vec3f(1, 1, -5)),
-        Tri(Vec3f(0.8, 1.2, -7), Vec3f(0.01, 0, -0.3), Vec3f(1, 0.1, -3))
-    };
+    tris.insert(tris.end(), cubeTris.begin(), cubeTris.end());
 
     for(Tri tri : tris)
     {
         Vec2f bbmin = INFINITY, bbmax = -INFINITY;
         Vec3f vProj[3];
-        int oobV = 0;
-        Vec3f vAttr[3] = 
-        {
-            {1,0,0},
-            {0,1,0},
-            {0,0,1}
-        };
-        Vec2f texCoord[3] =
-        {
-            {0,0},
-            {0,1},
-            {1,0}
-        };
 
         //Tri bounding box
         for(int i = 0; i < 3; i++)
         {
-            vProj[i] = cam.worldToScreen(tri[i]);
+            vProj[i] = cam.worldToScreen(tri[i].position);
 
             if(vProj[i].x < bbmin.x) { bbmin.x = vProj[i].x; }
             if(vProj[i].y < bbmin.y) { bbmin.y = vProj[i].y; }

@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <vec3.h>
+#include <tri.h>
 #include <cstdint>
 
 class OBJModel
@@ -19,6 +20,7 @@ class OBJModel
         std::vector<uint32_t> normalIndices;
 
         void loadOBJ(const char* path);
+        std::vector<Tri> toTris();
     private:
 };
 

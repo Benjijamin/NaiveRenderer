@@ -3,20 +3,21 @@
 
 #include <vec2.h>
 #include <vec3.h>
+#include <structs.h>
 
 class Tri
 {
     public:
         Tri();
-        Tri(Vec3f p1, Vec3f p2, Vec3f p3);
+        Tri(Vertex v1, Vertex v2, Vertex v3);
 
         bool isPointInTri(const Vec2f &p) const;
         
-        const Vec3f& operator [] (int i) const;
-        Vec3f operator [] (int i);
+        const Vertex operator [] (int i) const;
+        Vertex& operator [] (int i);
 
     private:
-        Vec3f tri[3] = {Vec3f(),Vec3f(),Vec3f()};
+        Vertex vertex[3];
 };
 
 float edge(const Vec2f &p1, const Vec2f &p2, const Vec2f &p3);

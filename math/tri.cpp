@@ -1,21 +1,22 @@
 #include <tri.h>
+#include <iostream>
 
 Tri::Tri() {}
-Tri::Tri(Vec3f p1, Vec3f p2, Vec3f p3)
+Tri::Tri(Vertex v1, Vertex v2, Vertex v3)
 {
-    tri[0] = p1;
-    tri[1] = p2;
-    tri[2] = p3;
+    vertex[0] = v1;
+    vertex[1] = v2;
+    vertex[2] = v3;
 }
 
-const Vec3f& Tri::operator [] (int i) const { return tri[i]; }
-Vec3f Tri::operator [] (int i) { return tri[i]; } 
+const Vertex Tri::operator [] (int i) const { return vertex[i]; }
+Vertex& Tri::operator [] (int i) { return vertex[i]; } 
 
 bool Tri::isPointInTri(const Vec2f &p) const
 {
-    float e1 = edge(p, tri[1].xy(), tri[2].xy());
-    float e2 = edge(p, tri[2].xy(), tri[0].xy());
-    float e3 = edge(p, tri[0].xy(), tri[1].xy());
+    float e1 = edge(p, vertex[1].position.xy(), vertex[2].position.xy());
+    float e2 = edge(p, vertex[2].position.xy(), vertex[0].position.xy());
+    float e3 = edge(p, vertex[0].position.xy(), vertex[1].position.xy());
 
     bool neg = (e1 < 0) || (e2 < 0) || (e3 < 0);
     bool pos = (e1 > 0) || (e2 > 0) || (e3 > 0);
