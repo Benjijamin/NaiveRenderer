@@ -2,6 +2,7 @@
 #define VEC3_H
 
 #include <vec2.h>
+#include <iostream>
 
 template<typename T>
 class Vec3
@@ -61,6 +62,11 @@ class Vec3
         { return Vec3<T>(x*mul, y*mul, z*mul); }
         Vec3<T> operator *= (const T &mul)
         { x *= mul, y *= mul, z *= mul; return *this; }
+
+        friend std::ostream& operator << (std::ostream& os, const Vec3<T> &vec)
+        {
+            return os << "Vec3: " << vec.x << ", " << vec.y << ", " << vec.z;
+        }
 };
 
 template<typename T>

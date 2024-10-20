@@ -2,8 +2,10 @@
 #include <vec3.h>
 #include <stdio.h>
 #include <matrix.h>
+#include <sceneobject.h>
 
-class Camera{
+class Camera : public SceneObject
+{
     public:
         Camera(int w, int h): imageWidth(w), imageHeight(h)
         {
@@ -27,7 +29,6 @@ class Camera{
         float right = top * filmAspectRatio * overscanScale;
         float left = -right;
 
-        Matrix4f worldToCameraM;
         Matrix4f projectionMatrix;
 
         void setProjectionMatrix()
@@ -59,7 +60,7 @@ class Camera{
         Vec3f worldToCamera(const Vec3f &pWorld) const
         {
             Vec3f pCamera;
-            worldToCameraM.multVecMatrix(pWorld, pCamera);
+            transform.multVecMatrix(pWorld, pCamera);
             return pCamera;
         }
 
@@ -94,15 +95,15 @@ class Camera{
 
         void translate(float x, float y, float z)
         {
-            worldToCameraM[3][0] += x;
-            worldToCameraM[3][1] += y;
-            worldToCameraM[3][2] += z;
+            transform[3][0] += x;
+            transform[3][1] += y;
+            transform[3][2] += z;
         }
 
         void setScale(float x, float y, float z)
         {
-            worldToCameraM[0][0] = x;
-            worldToCameraM[1][1] = y;
-            worldToCameraM[2][2] = z;
+            transform[0][0] = x;
+            transform[1][1] = y;
+            transform[2][2] = z;
         }
 };

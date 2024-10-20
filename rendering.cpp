@@ -4,12 +4,24 @@
 #include <tri.h>
 #include <ppm.h>
 #include <objloader.h>
+#include <memory>
+
+void sceneSetup(Camera &cam, std::vector<Mesh> &meshes)
+{
+    cam.translate(0, 0, -10);
+
+    Mesh& cube = meshes.emplace_back();
+    loadOBJ(cube, "models/cube.obj");
+
+    cube.translate(0,0,-1);
+}
 
 void renderScene(const int WIDTH, const int HEIGHT)
 {
     Camera cam(WIDTH, HEIGHT);
+    std::vector<Mesh> meshes;
 
-    cam.translate(-2, 0, -10);
+    sceneSetup(cam, meshes);
 
     Vec3i *imageBuffer = new Vec3i[WIDTH * HEIGHT];
     float *depthBuffer = new float[WIDTH * HEIGHT];
@@ -23,12 +35,10 @@ void renderScene(const int WIDTH, const int HEIGHT)
     }
 
     std::vector<Tri> tris;
-
-    OBJModel cube;
-    cube.loadOBJ("models/cube.obj");
-    std::vector<Tri> cubeTris = cube.toTris();
-
-    tris.insert(tris.end(), cubeTris.begin(), cubeTris.end());
+    for(Mesh mesh : meshes)
+    {
+        mesh.toTris(tris);
+    }
 
     for(Tri tri : tris)
     {
@@ -65,8 +75,12 @@ void renderScene(const int WIDTH, const int HEIGHT)
 
                     if(z < depthBuffer[j * WIDTH + i])
                     {
+                        Vec3f cameraSpaceCoord = Vec3f(w.x * vProj[0].x + w.y * vProj[1].x + w.z * vProj[2].x,
+                                                       w.x * vProj[0].y + w.y * vProj[1].y + w.z * vProj[2].y,
+                                                       w.x * vProj[0].z + w.y * vProj[1].z + w.z * vProj[2].z);
+
                         depthBuffer[j * WIDTH + i] = z;
-                        imageBuffer[j * WIDTH + i] = Vec3i(w.x * 255, w.y * 255, w.z * 255);
+                        imageBuffer[j * WIDTH + i] = Vec3i(cameraSpaceCoord.x * 255, cameraSpaceCoord.y * 255, cameraSpaceCoord.z * 255);
                     }
                 }
             }

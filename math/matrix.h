@@ -1,11 +1,14 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
+#include <vec3.h>
+
 template<typename T>
 class Matrix44
 {
     public:
         Matrix44() {}
+        Matrix44(const Matrix44<T> &other) : x(other.x) {}
         Matrix44(T a, T b, T c, T d, T e, T f, T g, T h, T i, T j, T k, T l, T m, T n, T o, T p)
         {
             x[0][0] = a; x[0][1] = b; x[0][2] = c; x[0][3] = d;

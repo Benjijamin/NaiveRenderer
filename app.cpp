@@ -131,8 +131,6 @@ class App
 
         void renderLoop()
         {
-            std::cout << "Starting render loop" << std::endl;
-
             while(!glfwWindowShouldClose(window))
             {
                 glClear(GL_COLOR_BUFFER_BIT);
