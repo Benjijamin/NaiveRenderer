@@ -52,6 +52,8 @@ class Camera : public SceneObject
             projectionMatrix[3][1] = 0;
             projectionMatrix[3][2] = -((2.f * farClippingPlane * nearClippingPlane) / (farClippingPlane - nearClippingPlane));
             projectionMatrix[3][3] = 0;
+
+            std::cout << "projection matrix transforms z: dst.z = src.z * " << projectionMatrix[2][2] << " + " << projectionMatrix[3][2] << std::endl;
         }
 
         /// @brief Projection to camera space

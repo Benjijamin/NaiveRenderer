@@ -12,6 +12,7 @@ class Vec3
         Vec3() : x(T(0)), y(T(0)), z(T(0)) {}
         Vec3(const T &val) : x(val), y(val), z(val){}
         Vec3(T xx, T yy, T zz) : x(xx), y(yy), z(zz){}
+        Vec3(const Vec3& other) : x(other.x), y(other.y), z(other.z) {}
 
         Vec2<T> xy() const
         {

@@ -98,4 +98,6 @@ void loadOBJ(Mesh &mesh, const char* path)
         Vec3f normal = temp_normals[mesh.normalIndices[i]];
         mesh.indexedNormals.push_back(normal);
     }
+
+    fclose(file);
 }

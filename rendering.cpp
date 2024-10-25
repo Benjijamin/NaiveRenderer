@@ -10,11 +10,27 @@ void sceneSetup(Camera &cam, std::vector<Mesh> &meshes)
 {
     cam.translate(0, 0, -10);
 
-    Mesh& cube = meshes.emplace_back();
-    loadOBJ(cube, "models/cube.obj");
+    meshes.emplace_back();
+    loadOBJ(meshes.back(), "models/cube.obj");
 
-    cube.translate(0,0,-1);
+    meshes.emplace_back();
+    loadOBJ(meshes.back(), "models/cube.obj");
+
+    meshes[0].translate(0,-3,-50);
+    meshes[0].setScale(10,0.2,50);
+
+    meshes[1].translate(1.5, 0, 0);
 }
+
+float visualizeDepth(float z)
+{
+    float near = 0.1;
+    float far = 100;
+    float A = -((far + near) / (far - near));
+    float B = -((2 * far * near) / (far - near));
+    float ret = (B / (-z - A));
+    return ret;
+};
 
 void renderScene(const int WIDTH, const int HEIGHT)
 {
@@ -33,9 +49,12 @@ void renderScene(const int WIDTH, const int HEIGHT)
             depthBuffer[j * WIDTH + i] = INFINITY;
         }
     }
+    
+    std::cout << meshes.size() << " objects to be rendered" << std::endl;
 
     std::vector<Tri> tris;
-    for(Mesh mesh : meshes)
+
+    for(Mesh& mesh : meshes)
     {
         mesh.toTris(tris);
     }
@@ -75,12 +94,12 @@ void renderScene(const int WIDTH, const int HEIGHT)
 
                     if(z < depthBuffer[j * WIDTH + i])
                     {
-                        Vec3f cameraSpaceCoord = Vec3f(w.x * vProj[0].x + w.y * vProj[1].x + w.z * vProj[2].x,
-                                                       w.x * vProj[0].y + w.y * vProj[1].y + w.z * vProj[2].y,
-                                                       w.x * vProj[0].z + w.y * vProj[1].z + w.z * vProj[2].z);
+                        float depth = visualizeDepth(z);
 
                         depthBuffer[j * WIDTH + i] = z;
-                        imageBuffer[j * WIDTH + i] = Vec3i(cameraSpaceCoord.x * 255, cameraSpaceCoord.y * 255, cameraSpaceCoord.z * 255);
+                        imageBuffer[j * WIDTH + i] = Vec3i((std::abs(100 + depth)*2.55), 
+                                                           (std::abs(100 + depth)*2.55), 
+                                                           (std::abs(100 + depth)*2.55));
                     }
                 }
             }

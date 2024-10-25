@@ -9,6 +9,7 @@ class Vec2
         Vec2() : x(T(0)), y(T(0)){}
         Vec2(const T &val) : x(val), y(val){}
         Vec2(T xx, T yy) : x(xx), y(yy){}
+        Vec2(const Vec2& other) : x(other.x), y(other.y) {}
 
         T length() const
         {

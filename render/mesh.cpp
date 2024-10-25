@@ -2,9 +2,6 @@
 #include <iostream>
 
 Mesh::Mesh() {}
-Mesh::Mesh(const Mesh& other) : SceneObject(other), indexedVerts(other.indexedVerts), indexedNormals(other.indexedNormals), indexedUvs(other.indexedUvs),
-    vertIndices(other.vertIndices), normalIndices(other.normalIndices), uvIndices(other.uvIndices), 
-    verts(other.verts), normals(other.normals), uvs(other.uvs) {}
 
 std::string Mesh::info()
 {
@@ -12,9 +9,41 @@ std::string Mesh::info()
     + "iv " + std::to_string(indexedVerts.size()) + " in " + std::to_string(indexedNormals.size()) + " iu " + std::to_string(indexedUvs.size());
 }
 
+std::string Mesh::deepInfo()
+{
+    std::string s = info() + "\n";
+    s += "indexed Verts : \n"; 
+    for (size_t i = 0; i < indexedVerts.size(); i++)
+    {
+        s += "Vec3: " + std::to_string(indexedVerts[i].x)
+            + " " + std::to_string(indexedVerts[i].y)
+            + " " + std::to_string(indexedVerts[i].z) + "\n";
+    }
+    
+    s += "indexed Normals : \n"; 
+    for (size_t i = 0; i < indexedNormals.size(); i++)
+    {
+        s += "Vec3: " + std::to_string(indexedNormals[i].x)
+            + " " + std::to_string(indexedNormals[i].y)
+            + " " + std::to_string(indexedNormals[i].z) + "\n";
+    }
+    
+    s += "indexed Uvs : \n"; 
+    for (size_t i = 0; i < indexedUvs.size(); i++)
+    {
+        s += "Vec2: " + std::to_string(indexedUvs[i].x)
+            + " " + std::to_string(indexedUvs[i].y) + "\n";
+    }
+
+    s += "end of mesh";
+    
+    return s;
+}
+
 void Mesh::toTris(std::vector<Tri> &tris)
 {
     std::vector<Vec3f> wsVerts = indexedVerts;
+
 
     for (size_t i = 0; i < wsVerts.size(); i++)
     {
@@ -48,10 +77,10 @@ void Mesh::toTris(std::vector<Tri> &tris)
 
 void Mesh::clear()
 {
-    verts.clear();
+    indexedVerts.clear();
     vertIndices.clear();
-    uvs.clear();
+    indexedUvs.clear();
     uvIndices.clear();
-    normals.clear();
+    indexedNormals.clear();
     normalIndices.clear();
 }
