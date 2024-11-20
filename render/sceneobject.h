@@ -14,6 +14,9 @@ class SceneObject
 
         void translate(float x, float y, float z);
         void setScale(float x, float y, float z);
+        void rotate(float xRad, float yRad, float zRad);
+
+    private:
 };
 
 #endif

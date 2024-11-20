@@ -8,7 +8,13 @@ class Matrix44
 {
     public:
         Matrix44() {}
-        Matrix44(const Matrix44<T> &other) : x(other.x) {}
+        Matrix44(const Matrix44<T> &other)
+        {
+            x[0][0] = other.x[0][0]; x[0][1] = other.x[0][1]; x[0][2] = other.x[0][2]; x[0][3] = other.x[0][3];
+            x[1][0] = other.x[1][0]; x[1][1] = other.x[1][1]; x[1][2] = other.x[1][2]; x[1][3] = other.x[1][3];
+            x[2][0] = other.x[2][0]; x[2][1] = other.x[2][1]; x[2][2] = other.x[2][2]; x[2][3] = other.x[2][3];
+            x[3][0] = other.x[3][0]; x[3][1] = other.x[3][1]; x[3][2] = other.x[3][2]; x[3][3] = other.x[3][3];
+        }
         Matrix44(T a, T b, T c, T d, T e, T f, T g, T h, T i, T j, T k, T l, T m, T n, T o, T p)
         {
             x[0][0] = a; x[0][1] = b; x[0][2] = c; x[0][3] = d;
@@ -160,6 +166,14 @@ class Matrix44
                 }
             }
             return mult;
+        }
+        friend std::ostream& operator << (std::ostream& os, const Matrix44<T> &mat)
+        {
+            return os << "matrix is : " << std::endl
+                << "[" << mat[0][0] << "]" << "[" << mat[0][1] << "]" << "[" << mat[0][2] << "]" << "[" << mat[0][3] << "]" << std::endl
+                << "[" << mat[1][0] << "]" << "[" << mat[1][1] << "]" << "[" << mat[1][2] << "]" << "[" << mat[1][3] << "]" << std::endl
+                << "[" << mat[2][0] << "]" << "[" << mat[2][1] << "]" << "[" << mat[2][2] << "]" << "[" << mat[2][3] << "]" << std::endl
+                << "[" << mat[3][0] << "]" << "[" << mat[3][1] << "]" << "[" << mat[3][2] << "]" << "[" << mat[3][3] << "]" << std::endl;
         }
     private:
         T x[4][4] = {{1,0,0,0},{0,1,0,0},{0,0,1,0},{0,0,0,1}};

@@ -94,18 +94,4 @@ class Camera : public SceneObject
 
             return pRaster;
         }
-
-        void translate(float x, float y, float z)
-        {
-            transform[3][0] += x;
-            transform[3][1] += y;
-            transform[3][2] += z;
-        }
-
-        void setScale(float x, float y, float z)
-        {
-            transform[0][0] = x;
-            transform[1][1] = y;
-            transform[2][2] = z;
-        }
 };

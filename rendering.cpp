@@ -8,6 +8,8 @@
 
 void sceneSetup(Camera &cam, std::vector<Mesh> &meshes)
 {
+    //Always rotate before translating!
+    
     cam.translate(0, 0, -10);
 
     meshes.emplace_back();
@@ -19,6 +21,7 @@ void sceneSetup(Camera &cam, std::vector<Mesh> &meshes)
     meshes[0].translate(0,-3,-50);
     meshes[0].setScale(10,0.2,50);
 
+    meshes[1].rotate(0, 45, 0);
     meshes[1].translate(1.5, 0, 0);
 }
 
